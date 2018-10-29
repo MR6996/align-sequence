@@ -1,6 +1,5 @@
 package application;
 
-import java.awt.Image;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -17,7 +16,6 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Control;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
@@ -67,7 +65,7 @@ public class MainController {
     void initialize() {
     	
 		try {
-			String resFolderPath = getClass().getResource("/blosum/").getFile();
+			String resFolderPath = getClass().getResource("/sm/").getFile();
 			File resFolder = new File(URLDecoder.decode(resFolderPath, "UTF-8"));
 
 			for(File f : resFolder.listFiles()) 
@@ -96,7 +94,7 @@ public class MainController {
     	
     	try {
 			SostitutionMatrix sMatrix = SostitutionMatrix.load(
-					getClass().getResource("/blosum/"+sostMatChoiceBox.getValue())
+					getClass().getResource("/sm/"+sostMatChoiceBox.getValue())
 				);
 			
 	    	NeedelemanWunsch nw = new NeedelemanWunsch(a, b, gop, gep, sMatrix);
@@ -129,11 +127,10 @@ public class MainController {
     	
 		try {
 			if(seqFile != null) {
-				System.out.println(event.getSource());
 				BufferedReader reader = new BufferedReader( new InputStreamReader( new FileInputStream(seqFile)));
-				if( ((ImageView)event.getSource()).getId() == "uploadAButton")
+				if( ((ImageView)event.getSource()).equals(uploadAButton))
 					sequenceATextArea.setText(reader.readLine());
-				else if( ((ImageView)event.getSource()).getId() == "uploadBButton")
+				else if( ((ImageView)event.getSource()).equals(uploadBButton))
 					sequenceBTextArea.setText(reader.readLine());
 				
 				reader.close();
@@ -144,4 +141,10 @@ public class MainController {
     	
     }
 
+    @FXML
+    void reset(MouseEvent event) {
+    	sequenceATextArea.clear();
+    	sequenceBTextArea.clear();
+    }
+    
 }
