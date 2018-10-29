@@ -1,0 +1,80 @@
+
+
+.root {
+	-fx-background-color: #363636;	
+}
+
+
+.menu-bar {
+	-fx-background-color: #363636;	
+}
+
+.label {
+	-fx-text-fill: #DDDDDD;
+}
+
+
+.text-field {
+	-fx-background-color: #615851;	
+}
+ 
+.text-field ,
+.text-area {
+	-fx-text-fill: #FFFFFF;	 
+	-fx-prompt-text-fill: #CCCCCC;	 
+	-fx-highlight-fill: #EEEEEE ;
+	-fx-highlight-text-fill: #000000;
+}
+
+.text-area .content {
+	-fx-background-color: #615851;	
+	-fx-border-color: #CCCCCC;
+	-fx-border-width: 0.1pt;
+}
+
+
+.choice-box {
+	-fx-background-color: #615851;		
+	-fx-mark-color: #48A1DD;
+}
+
+
+.choice-box .open-button .arrow {
+	-fx-background-color: #48A1DD;
+}
+
+.button {
+	-fx-background-color: #48A1DD;
+	-fx-background-radius: 0;
+	-fx-text-fill: #FFFFFF;
+}
+
+.button:hover {
+	-fx-background-color: #01A7EF;
+}
+
+.radio-button {
+	-fx-text-fill: #DDDDDD;
+}
+
+.radio-button:selected .radio .dot  {
+	-fx-background-color: #48A1DD; 
+}
+
+.titled-pane {
+	-fx-text-fill: #DDDDDD;
+}
+
+.titled-pane > .title  {
+	-fx-background-color: #615851;	
+	-fx-background-radius: 5 5 0 0, 4 4 0 0, 3 3 0 0;
+	-fx-border-color: #CCCCCC;
+	-fx-border-radius: 5 5 0 0, 4 4 0 0, 3 3 0 0;
+}
+	
+.titled-pane > *.content  {
+	-fx-background-color: #363636;
+	-fx-box-border: #CCCCCC;
+	-fx-border-radius: 0 0 5 5 , 0 0 4 4, 0 0 3 3 ;
+ }
+ 
