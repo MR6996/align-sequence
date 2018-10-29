@@ -9,6 +9,10 @@
 	-fx-background-color: #363636;	
 }
 
+#upload-button:hover {
+	-fx-effect: dropshadow( three-pass-box, #01A7EF , 10, 0.40, 0,0);
+}
+
 .label {
 	-fx-text-fill: #DDDDDD;
 }
@@ -36,6 +40,23 @@
 .choice-box {
 	-fx-background-color: #615851;		
 	-fx-mark-color: #48A1DD;
+}
+
+.choice-box .context-menu { 
+	-fx-background-color: #615851; 
+}
+	
+.choice-box .menu-item:focused {
+	-fx-background-color: #615851;		
+}
+
+.choice-box .menu-item > .label {
+
+}
+
+.choice-box .menu-item:focused > .label { 
+	-fx-background-color: #48A1DD;
+	-fx-text-fill: #FFFFFF;
 }
 
 

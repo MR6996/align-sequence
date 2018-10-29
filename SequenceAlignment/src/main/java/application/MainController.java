@@ -59,8 +59,6 @@ public class MainController {
     @FXML
     private TextArea outputTextArea;
     
-    private ArrayList<String> proteinsMatrices;
-    
     @FXML
     void initialize() {
     	
