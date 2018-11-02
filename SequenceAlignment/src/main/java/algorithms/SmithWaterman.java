@@ -1,5 +1,7 @@
 package algorithms;
 
+import java.util.ArrayList;
+
 public class SmithWaterman extends AlignmentAlgorithm {
 
 	private Integer firstK;
@@ -17,11 +19,15 @@ public class SmithWaterman extends AlignmentAlgorithm {
 		this.threshold = threshold;
 	}
 
-	
-	
 	@Override
-	protected void elaborateResults() {
-		
+	protected ArrayList<Cell> getMaximumCells() {
+		return new ArrayList<>();
 	}
+
+	@Override
+	protected boolean isFinalCell(Cell c) {
+		return c.getScore() == 0;
+	}
+
 
 }

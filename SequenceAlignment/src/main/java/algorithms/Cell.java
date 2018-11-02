@@ -44,7 +44,7 @@ public class Cell {
 
 	public void setDiagonal(Cell diagonal) { this.diagonal = diagonal; }
 
-	public boolean isTerminal() { return left == null && up == null && diagonal == null; }
+	public boolean notAny() { return left == null && up == null && diagonal == null; }
 	
 	
 }
