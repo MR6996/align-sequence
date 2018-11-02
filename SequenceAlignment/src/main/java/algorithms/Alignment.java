@@ -6,7 +6,7 @@ public class Alignment {
 	private String markers;
 	private String b;
 	
-	public Alignment(String a, String markers, String b) {
+	protected Alignment(String a, String markers, String b) {
 		this.a = a;
 		this.markers = markers;
 		this.b = b;
