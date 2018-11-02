@@ -1,8 +1,6 @@
 package algorithms;
 
 import java.util.ArrayList;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class NeedelemanWunsch extends AlignmentAlgorithm {
 
@@ -33,18 +31,7 @@ public class NeedelemanWunsch extends AlignmentAlgorithm {
 		
 		for(Cell c : mCells) {
 			Stack<CellTrace> s = new ArrayListStack<>();
-			if(c.getX() == a.length()-1)
-				s.push( 
-					new CellTrace(c, 
-								  new StringBuilder(), 
-								  new StringBuilder(b.substring(c.getY()+1)))
-				);
-			else
-				s.push( 
-					new CellTrace(c, 
-								  new StringBuilder(a.substring(c.getX()+1)), 
-								  new StringBuilder())
-				);
+			s.push(new CellTrace(c, a.substring(c.getX()+1), b.substring(c.getY()+1)));
 			
 			while( !s.isEmpty()) {
 				CellTrace top = s.pop();
@@ -52,43 +39,27 @@ public class NeedelemanWunsch extends AlignmentAlgorithm {
 				int y = top.c.getY();
 				
 				if(top.c.isTerminal()) {
-					if(x == 0) { 
-						String padding = Stream.generate(()->" ").limit(y).collect(Collectors.joining());
-						alignments.add(
-							padding + a.substring(0, 1) + top.partialA + 
-							"\n" + 
-							b.substring(0, y+1) +top.partialB
-						);
-					}
-					else {
-						String padding = Stream.generate(()->" ").limit(x).collect(Collectors.joining());
-						alignments.add(
-							a.substring(0, x+1) + top.partialA + 
-							"\n" + 
-							padding + b.substring(0, 1) + top.partialB
-						);
-					}
+					top.partialAlignment.add(a.charAt(x), b.charAt(y));
+					top.partialAlignment.add(a.substring(0, x), b.substring(0, y));
+					alignments.add(top.partialAlignment.build());
 				}
 				else {
 					if(top.c.getLeft() != null)
 						s.push( 
 							new CellTrace(top.c.getLeft(), 
-										  new StringBuilder(top.partialA.insert(0, "-")), 
-										  new StringBuilder(top.partialB.insert(0, b.charAt(y))))
+										  new Alignment.Builder(top.partialAlignment.addOnB(b.charAt(y))))
 						);
 
 					if(top.c.getUp() != null)
 						s.push( 
 							new CellTrace(top.c.getUp(), 
-										  new StringBuilder(top.partialA.insert(0, a.charAt(x))), 
-										  new StringBuilder(top.partialB.insert(0, "-")))
+										  new Alignment.Builder(top.partialAlignment.addOnA(a.charAt(x))))
 						);
 					
 					if(top.c.getDiagonal() != null)
 						s.push( 
 							new CellTrace(top.c.getDiagonal(), 
-										  new StringBuilder(top.partialA.insert(0, a.charAt(x))), 
-										  new StringBuilder(top.partialB.insert(0, b.charAt(y))))
+										  new Alignment.Builder(top.partialAlignment.add(a.charAt(x), b.charAt(y))))
 						);
 				}
 			}

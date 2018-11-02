@@ -10,7 +10,7 @@ public abstract class AlignmentAlgorithm {
 	protected float gep;
 	protected Cell[][] pairingMatrix;
 	protected SostitutionMatrix sostitutionMatrix;
-	protected ArrayList<String> alignments;
+	protected ArrayList<Alignment> alignments;
 
 	public AlignmentAlgorithm(String a, String b, 
 						 int gop, float gep,
@@ -104,7 +104,7 @@ public abstract class AlignmentAlgorithm {
 		
 	protected abstract void elaborateResults();
 	
-	public ArrayList<String> getAlignments() { 
+	public ArrayList<Alignment> getAlignments() { 
 		alignments = null;
 		alignments = new ArrayList<>();
 		elaborateResults();

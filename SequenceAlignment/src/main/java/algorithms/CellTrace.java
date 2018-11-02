@@ -3,13 +3,16 @@ package algorithms;
 class CellTrace {
 	
 	protected Cell c;
-	protected StringBuilder partialA;
-	protected StringBuilder partialB;
+	protected Alignment.Builder partialAlignment;
 	
-	public CellTrace(Cell c, StringBuilder partialA, StringBuilder partialB) {
+	public CellTrace(Cell c, String initA, String initB) {
 		this.c = c;
-		this.partialA = partialA;
-		this.partialB = partialB;
+		this.partialAlignment = new Alignment.Builder(initA, initB);
+	}
+	
+	public CellTrace(Cell c, Alignment.Builder builder) {
+		this.c = c;
+		this.partialAlignment = builder;
 	}
 	
 	

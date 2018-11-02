@@ -37,27 +37,39 @@ public class Alignment {
 			this.partialB = new StringBuilder(initB);
 		}
 		
-		public void addOnA(Character c) {
+		public Builder(Builder b) {
+			this.partialA = new StringBuilder(b.partialA);
+			this.partialB = new StringBuilder(b.partialB);
+			this.partialMarker = new StringBuilder(b.partialMarker);
+		}
+		
+		public Alignment.Builder addOnA(Character c) {
 			partialA.insert(0, c);
 			partialB.insert(0, '-');
 			partialMarker.insert(0, ' ');
+			
+			return this;
 		}
 		
-		public void addOnB(Character c) {
+		public Alignment.Builder addOnB(Character c) {
 			partialA.insert(0, '-');
 			partialB.insert(0, c);
 			partialMarker.insert(0, ' ');
+			
+			return this;
 		}
 		
-		public void add(Character cA, Character cB) {
+		public Alignment.Builder add(Character cA, Character cB) {
 			partialA.insert(0, cA);
 			partialB.insert(0, cB);
 			
 			if(cA.equals(cB)) partialMarker.insert(0, '|');
 			else partialMarker.insert(0, '*');
+			
+			return this;
 		}
 		
-		public void add(String a, String b) {
+		public Alignment.Builder add(String a, String b) {
 			int i, j;
 			
 			for(i = a.length()-1 , j = b.length()-1; i >= 0 && j >= 0; i--, j--) {
@@ -77,6 +89,8 @@ public class Alignment {
 				partialB.insert(0, b.charAt(j));
 				partialMarker.insert(0, ' ');
 			}
+			
+			return this;
 		}
 		
 		public Alignment build() { 
