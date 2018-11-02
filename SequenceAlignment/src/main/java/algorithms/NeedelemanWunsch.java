@@ -123,5 +123,5 @@ public class NeedelemanWunsch extends AlignmentAlgorithm {
 	}
 	
 	
-	public ArrayList<String> getAlignments() { return alignments; }
+	
 }

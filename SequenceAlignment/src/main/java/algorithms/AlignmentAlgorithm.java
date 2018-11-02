@@ -22,61 +22,61 @@ public abstract class AlignmentAlgorithm {
 		this.sostitutionMatrix = sostitutionMatrix;
 		
 		pairingMatrix = new Cell[a.length()][b.length()];
-		alignments = new ArrayList<>();
 		
-		for(int i = 0; i < a.length(); i++)
-			for(int j = 0; j < b.length(); j++)
-				pairingMatrix[i][j] = new Cell(i,j);	
-		fillPairingMatrix();
-		elaborateResults();
+		for(int i = 0; i < a.length(); i++) 
+			pairingMatrix[i][0] = new Cell(i,0, Math.max(0.0f, this.sostitutionMatrix.get(this.a.charAt(i), this.b.charAt(0))));
+		
+		
+		for(int j = 1; j < b.length(); j++)
+			pairingMatrix[0][j] = new Cell(0,j, Math.max(0.0f, this.sostitutionMatrix.get(this.a.charAt(0), this.b.charAt(j))));
+		
+		for(int i = 1; i < a.length(); i++)
+			for(int j = 1; j < b.length(); j++)
+				pairingMatrix[i][j] = new Cell(i,j, sostitutionMatrix.get(this.a.charAt(i), this.b.charAt(j)));
+				
+		updatePairingMatrix();
 	}
 
 	public String getA() { return a; }
 	
 	public String getB() {return b; }
 
-	public void setB(String b) { this.b = b; }
-
-	public int getGop() { return gop;	}
+	public int getGop() { return gop; }
 
 	public float getGep() { return gep; }
 
 	public Cell[][] getPairingMatrix() { return pairingMatrix; }
 
 	
-	private void fillPairingMatrix() {
+	private void updatePairingMatrix() {
 		int lenA = a.length();
 		int lenB = b.length();
 		
-		for(int i = 0; i < lenA; i++)
-			for(int j = 0; j < lenB; j++) 
-				pairingMatrix[i][j].updateScore(
-					sostitutionMatrix.get(a.charAt(i), b.charAt(j))
-				);
-		
-		for(int i = 1; i < lenA; i++) {
-			float upPenalizedValue = 
-				pairingMatrix[i-1][0].getScore() - ((pairingMatrix[i-1][0].getUp() != null) ? gep:gop);
-			if(pairingMatrix[i][0].getScore() < upPenalizedValue) {
+		float penalty = gop;
+		for(int i = 1; i < lenA; i++) {			
+			float upPenalizedValue = pairingMatrix[i-1][0].getScore() - penalty;
+			if(upPenalizedValue >= pairingMatrix[i][0].getScore()  ) {
 				pairingMatrix[i][0].updateScore(upPenalizedValue);
 				pairingMatrix[i][0].setUp(pairingMatrix[i-1][0]);
+				penalty = gep;
 			}
+			else penalty = gop;
 		}
 		
-
+		penalty = gop;
 		for(int i = 1; i < lenB; i++) {
-			float leftPenalizedValue = 
-				 pairingMatrix[0][i-1].getScore() - ((pairingMatrix[0][i-1].getLeft() != null) ? gep:gop);
-			if(pairingMatrix[0][i].getScore() < leftPenalizedValue) {
+			float leftPenalizedValue = pairingMatrix[0][i-1].getScore() - penalty;
+			if(leftPenalizedValue >= pairingMatrix[0][i].getScore()) {
 				pairingMatrix[0][i].updateScore(leftPenalizedValue);
 				pairingMatrix[0][i].setLeft(pairingMatrix[0][i-1]);
+				penalty = gep;
 			}
+			else penalty = gop;
 		}
-					
+		
 		for(int i = 1; i < lenA; i++)
-			for(int j = 1; j < lenB; j++)
+			for(int j = 1; j < lenB; j++) 
 				maximize(i,j);
-				
 	}
 
 	private void maximize(int i, int j) {
@@ -103,6 +103,13 @@ public abstract class AlignmentAlgorithm {
 
 		
 	protected abstract void elaborateResults();
+	
+	public ArrayList<String> getAlignments() { 
+		alignments = null;
+		alignments = new ArrayList<>();
+		elaborateResults();
+		return alignments; 
+	}
 
 	@Override
 	public String toString() {
@@ -118,7 +125,6 @@ public abstract class AlignmentAlgorithm {
 		
 		return builder.toString();
 	}
-	
-	
+
 
 }

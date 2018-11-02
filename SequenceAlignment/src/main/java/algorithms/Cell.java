@@ -10,15 +10,19 @@ public class Cell {
 	private Cell up;
 	private Cell diagonal;
 	
-	
-	public Cell(int x, int y) {
+	public Cell(int x, int y, float score) {
 		this.x = x;
 		this.y = y;
-		score = 0.0f;
+		this.score = score;
 		left = null;
 		up = null;
 		diagonal = null;
 	}
+	
+	public Cell(int x, int y) {
+		this(x,y, 0.0f);
+	}
+	
 	
 	public int getX() { return x; }
 
