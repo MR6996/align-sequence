@@ -18,13 +18,13 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="main_pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="640.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MainController">
+<AnchorPane id="main_pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MainController">
    <children>
       <MenuBar prefHeight="25.0" prefWidth="600.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
-              <MenuItem mnemonicParsing="false" text="Close" />
+              <MenuItem mnemonicParsing="false" onAction="#exit" text="Close" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="bho" />
@@ -78,8 +78,21 @@
       </TitledPane>
       <Button fx:id="alignButton" layoutX="550.0" layoutY="204.0" mnemonicParsing="false" onMouseClicked="#align" prefHeight="25.0" prefWidth="75.0" text="Align" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="204.0" />
       <Button fx:id="resetButton" layoutX="550.0" layoutY="234.0" mnemonicParsing="false" onMouseClicked="#reset" prefHeight="25.0" prefWidth="75.0" text="Reset" textAlignment="CENTER" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="234.0" />
-      <Separator layoutX="13.0" layoutY="348.0" prefHeight="4.0" prefWidth="608.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" />
-      <TextArea fx:id="outputTextArea" cacheShape="false" editable="false" focusTraversable="false" layoutX="15.0" layoutY="352.0" prefHeight="116.0" prefWidth="612.0" wrapText="true" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="360.0" />
+      <Separator layoutX="10.0" layoutY="349.0" prefHeight="4.0" prefWidth="880.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" />
+      <TextArea fx:id="outputTextArea" cacheShape="false" editable="false" focusTraversable="false" layoutX="15.0" layoutY="396.0" prefHeight="190.0" prefWidth="832.0" wrapText="true" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="54.0" AnchorPane.topAnchor="360.0">
+         <font>
+            <Font name="Monospaced Regular" size="12.0" />
+         </font></TextArea>
+      <ImageView fx:id="showMatrixButton" fitHeight="60.0" fitWidth="31.0" layoutX="804.0" layoutY="368.0" onMouseClicked="#showMatrix" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="365.0">
+         <image>
+            <Image url="@mat_icon.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="copyResultButton" fitHeight="60.0" fitWidth="31.0" layoutX="855.0" layoutY="405.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="410.0">
+         <image>
+            <Image url="@copy_icon.png" />
+         </image>
+      </ImageView>
    </children>
    <cursor>
       <Cursor fx:constant="DEFAULT" />
