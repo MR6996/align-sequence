@@ -49,6 +49,8 @@ public class NeedelemanWunsch extends AlignmentAlgorithm {
 			if(pairingMatrix[lenA-1][i].getScore() == max)
 				mCells.add(pairingMatrix[lenA-1][i]);
 		
+		this.maximumScore = max;
+		
 		return mCells;
 	}
 

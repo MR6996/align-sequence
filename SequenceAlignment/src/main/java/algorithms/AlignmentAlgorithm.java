@@ -11,6 +11,7 @@ public abstract class AlignmentAlgorithm {
 	protected Cell[][] pairingMatrix;
 	protected SostitutionMatrix sostitutionMatrix;
 	protected ArrayList<Alignment> alignments;
+	protected float maximumScore;
 
 	public AlignmentAlgorithm(String a, String b, 
 						 int gop, float gep,
@@ -119,17 +120,22 @@ public abstract class AlignmentAlgorithm {
 					alignments.add(top.partialAlignment.build());
 				}
 				else {
-					if(top.c.getLeft() != null)
+					if(top.c.getLeft() != null) {
 						s.push( 
 							new CellTrace(top.c.getLeft(), 
-										  new Alignment.Builder(top.partialAlignment.addOnB(b.charAt(y))))
+										  new Alignment.Builder(top.partialAlignment.addOnB(b.charAt(y))),
+										  false, true)
 						);
+						
+					}
 
-					if(top.c.getUp() != null)
+					if(top.c.getUp() != null) {
 						s.push( 
 							new CellTrace(top.c.getUp(), 
-										  new Alignment.Builder(top.partialAlignment.addOnA(a.charAt(x))))
+										  new Alignment.Builder(top.partialAlignment.addOnA(a.charAt(x))),
+										  true, false)
 						);
+					}
 					
 					if(top.c.getDiagonal() != null)
 						s.push( 
@@ -145,6 +151,9 @@ public abstract class AlignmentAlgorithm {
 	
 	protected abstract ArrayList<Cell> getMaximumCells();
 	
+		
+	public float getMaximumScore() { return maximumScore; }
+
 	public ArrayList<Alignment> getAlignments() { 
 		alignments = null;
 		alignments = new ArrayList<>();
