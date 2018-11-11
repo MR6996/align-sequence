@@ -1,6 +1,7 @@
 package algorithms;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public abstract class AlignmentAlgorithm {
 	
@@ -21,6 +22,7 @@ public abstract class AlignmentAlgorithm {
 		this.gop = gop;
 		this.gep = gep;
 		this.sostitutionMatrix = sostitutionMatrix;
+		this.maximumScore = Float.MAX_VALUE;
 		
 		pairingMatrix = new Cell[a.length()][b.length()];
 		
@@ -103,7 +105,7 @@ public abstract class AlignmentAlgorithm {
 	}
 
 	private void elaborateResults() {
-		ArrayList<Cell> mCells = getMaximumCells();
+		List<Cell> mCells = getMaximumCells();
 		
 		for(Cell c : mCells) {
 			Stack<CellTrace> s = new ArrayListStack<>();
@@ -149,7 +151,7 @@ public abstract class AlignmentAlgorithm {
 	
 	protected abstract boolean isFinalCell(Cell c);
 	
-	protected abstract ArrayList<Cell> getMaximumCells();
+	protected abstract List<Cell> getMaximumCells();
 	
 		
 	public float getMaximumScore() { return maximumScore; }

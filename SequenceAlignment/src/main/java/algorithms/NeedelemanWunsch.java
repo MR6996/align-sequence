@@ -1,6 +1,7 @@
 package algorithms;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class NeedelemanWunsch extends AlignmentAlgorithm {
 
@@ -26,7 +27,7 @@ public class NeedelemanWunsch extends AlignmentAlgorithm {
 
 	
 	@Override
-	protected ArrayList<Cell> getMaximumCells() {
+	protected List<Cell> getMaximumCells() {
 		ArrayList<Cell> mCells = new ArrayList<>();
 		
 		int lenA = a.length();
