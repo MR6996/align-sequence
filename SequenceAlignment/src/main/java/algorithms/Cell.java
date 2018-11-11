@@ -1,6 +1,6 @@
 package algorithms;
 
-public class Cell {
+public class Cell implements Comparable<Cell> {
 	
 	private int x;
 	private int y;
@@ -46,5 +46,36 @@ public class Cell {
 
 	public boolean notAny() { return left == null && up == null && diagonal == null; }
 	
+	@Override
+	public String toString() {
+		return "Cell [" + x + ", " + y + ", score=" + score + "]";
+	}
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + Float.floatToIntBits(score);
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Cell other = (Cell) obj;
+		if (Float.floatToIntBits(score) != Float.floatToIntBits(other.score))
+			return false;
+		return true;
+	}
+
+	@Override
+	public int compareTo(Cell o) {
+		return Float.compare(this.score, o.score);
+	}
 	
 }
