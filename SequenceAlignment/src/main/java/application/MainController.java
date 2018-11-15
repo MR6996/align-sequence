@@ -181,7 +181,7 @@ public class MainController {
 	    		Stage matrixStage = new Stage();
 	    		
 	    		FXMLLoader loader = new FXMLLoader(getClass().getResource("MatrixApplication.fxml"));
-	    		loader.setController( new MatrixController(algorithm.getPairingMatrix(), algorithm.getMaximumScore()));
+	    		loader.setController( new MatrixController(algorithm.getPairingMatrix(), algorithm.getA(), algorithm.getB()));
 	    		Parent root = loader.load();
 	    		
 	    		matrixStage.setTitle("Alignment matrix");

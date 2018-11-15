@@ -2,86 +2,79 @@ package application;
 
 import algorithms.Cell;
 import javafx.fxml.FXML;
-import javafx.geometry.VPos;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Slider;
-import javafx.scene.paint.Color;
-import javafx.scene.text.TextAlignment;
+import javafx.geometry.Pos;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.GridPane;
 
 public class MatrixController {
 
-	private static final double SQUARE_SIZE = 40.0;
-
 	private int n;
 	private int m;
-	private float maxScore;
+	private String a;
+	private String b;
 	private Cell[][] pMatrix;
 
-	public MatrixController(Cell[][] pMatrix, float maxScore) {
+	public MatrixController(Cell[][] pMatrix, String a, String b) {
 		this.pMatrix = pMatrix;
-		this.maxScore = maxScore;
-		this.n = pMatrix.length;
-		this.m = pMatrix[0].length;
+		this.a = a;
+		this.b = b;
+		this.n = a.length();
+		this.m = b.length();
 	}
 
 	@FXML
-	private Canvas matrixCanvas;
+	private ScrollPane matrixScollPane;
 
 	@FXML
-	private Slider scaleSlider;
+	private GridPane matrixPane;
+
+	@FXML
+	private ScrollPane aScrollPane;
+
+	@FXML
+	private GridPane sequenceAPane;
+
+	@FXML
+	private ScrollPane bScrollPane;
+
+	@FXML
+	private GridPane sequenceBPane;
 
 	@FXML
 	void initialize() {
-		drawMatrix();
+		try {
+		bScrollPane.hvalueProperty().bindBidirectional(matrixScollPane.hvalueProperty());
+		aScrollPane.vvalueProperty().bindBidirectional(matrixScollPane.vvalueProperty());
 
-		matrixCanvas.scaleXProperty().bind(scaleSlider.valueProperty().divide(100));
-		matrixCanvas.scaleYProperty().bind(scaleSlider.valueProperty().divide(100));
+		for (int i = 0; i < m; i++) {
+			Label bHeaderLabel = new Label(Character.toString(b.charAt(i)).toUpperCase());
+			bHeaderLabel.setPrefSize(40, 40);
+			bHeaderLabel.setAlignment(Pos.CENTER);
+			bHeaderLabel.setId("matrix-header-label");
+			sequenceBPane.add(bHeaderLabel, i, 0);
 
-	}
+			for (int j = 0; j < n; j++) {
+				Label scoreLabel = new Label(Float.toString(pMatrix[j][i].getScore()));
+				scoreLabel.setPrefSize(40, 40);
+				scoreLabel.setAlignment(Pos.CENTER);
+				scoreLabel.setId("matrix-element-label");
+				matrixPane.add(scoreLabel, i, j);
 
-	private void drawMatrix() {
-		double width = SQUARE_SIZE * m, height = SQUARE_SIZE * n;
-
-		matrixCanvas.setWidth(width);
-		matrixCanvas.setHeight(height);
-
-		GraphicsContext gfCtx = matrixCanvas.getGraphicsContext2D();
-		gfCtx.setTextAlign(TextAlignment.CENTER);
-		gfCtx.setTextBaseline(VPos.CENTER);
-
-		for (int i = 0; i < n; i++) {
-			gfCtx.setStroke(Color.BLACK);
-			gfCtx.strokeLine(0, SQUARE_SIZE * i, width, SQUARE_SIZE * i);
-
-			for (int j = 0; j < m; j++) {
-				double value = 0.6 * pMatrix[i][j].getScore() / maxScore + 0.4;
-
-				gfCtx.setFill(Color.hsb(196, 0.5, value));
-				gfCtx.fillRect(SQUARE_SIZE * j, SQUARE_SIZE * i, SQUARE_SIZE, SQUARE_SIZE);
-				gfCtx.setFill(Color.BLACK);
-				gfCtx.fillText(Float.toString(pMatrix[i][j].getScore()), SQUARE_SIZE * (j + 0.5),
-						SQUARE_SIZE * (i + 0.5));
-				
-				gfCtx.setStroke(Color.RED);
-				if(pMatrix[i][j].getDiagonal() != null) 
-					gfCtx.strokeLine(SQUARE_SIZE * j-7.5, SQUARE_SIZE * i-7.5, SQUARE_SIZE * j+7.5, SQUARE_SIZE * i+7.5);
-
-				if(pMatrix[i][j].getLeft() != null) 
-					gfCtx.strokeLine(SQUARE_SIZE * j-7.5, SQUARE_SIZE * i+20, SQUARE_SIZE * j+7.5, SQUARE_SIZE * i+20);
-				
-
-				if(pMatrix[i][j].getUp() != null) 
-					gfCtx.strokeLine(SQUARE_SIZE * j+20, SQUARE_SIZE * i-7.5, SQUARE_SIZE * j+20, SQUARE_SIZE * i+7.5);
 			}
 		}
 
-
-		gfCtx.setStroke(Color.BLACK);
-		gfCtx.strokeLine(0, SQUARE_SIZE * n, width, SQUARE_SIZE * n);
-		for (int i = 0; i <= m; i++) 
-			gfCtx.strokeLine(SQUARE_SIZE * i, 0, SQUARE_SIZE * i, height);
-		
+		for (int j = 0; j < n; j++) {
+			Label aHeaderLabel = new Label(Character.toString(a.charAt(j)).toUpperCase());
+			aHeaderLabel.setPrefSize(40, 40);
+			aHeaderLabel.setAlignment(Pos.CENTER);
+			aHeaderLabel.setId("matrix-header-label");
+			sequenceAPane.add(aHeaderLabel, 0, j);
+		}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }

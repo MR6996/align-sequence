@@ -1,0 +1,38 @@
+
+#matrix-header-label {
+	-fx-background-color: #c0c0c0;
+	-fx-border-color: #808080;
+	-fx-border-width: 1px	
+}
+
+#matrix-element-label {
+	-fx-background-color: #fdfdfd;
+	-fx-border-color: #c0c0c0;
+	-fx-border-width: 0.5px
+}
+
+#matrix-element-label:hover {
+	-fx-background-color: #9fcfff;
+}
+
+
+.scroll-pane {
+	-fx-background-color: #6a6a6a;
+}
+.scroll-pane .corner,
+.scroll-pane .scroll-bar:horizontall,
+.scroll-pane .scroll-bar:vertical {
+    -fx-background-insets: 0;
+}
+
+#a-scroll-pane {
+    -fx-background-insets: 0 1 0 0;
+}
+
+#b-scroll-pane {
+    -fx-background-insets: 0 0 1 0;
+}
+
+#matrix-scroll-pane {
+    -fx-background-insets: 1 0 0 1;
+}
