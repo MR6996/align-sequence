@@ -10,7 +10,7 @@ import java.net.URLDecoder;
 
 import algorithms.Alignment;
 import algorithms.AlignmentAlgorithm;
-import algorithms.NeedelemanWunsch;
+import algorithms.SmithWaterman;
 import algorithms.SostitutionMatrix;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -20,6 +20,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -70,6 +71,19 @@ public class MainController {
 
 	@FXML
 	private ImageView copyResultButton;
+	
+	@FXML
+    private CheckBox thresholdCheck;
+
+    @FXML
+    private TextField thresholdValue;
+
+    @FXML
+    private TextField maxAlignmentValue;
+
+    @FXML
+    private TextField maxScoresValue;
+	
 
 	private AlignmentAlgorithm algorithm;
 
@@ -115,7 +129,7 @@ public class MainController {
 			SostitutionMatrix sMatrix = SostitutionMatrix
 					.load(getClass().getResource("/sm/" + sostMatChoiceBox.getValue()));
 
-			algorithm = new NeedelemanWunsch(a, b, gop, gep, sMatrix);
+			algorithm = new SmithWaterman(a, b, gop, gep, sMatrix, 8);
 
 			
 			StringBuilder resultBuilder = new StringBuilder("Result:"); int i = 0;
