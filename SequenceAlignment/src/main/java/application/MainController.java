@@ -11,7 +11,7 @@ import java.net.URLDecoder;
 import algorithms.Alignment;
 import algorithms.AlignmentAlgorithm;
 import algorithms.SmithWaterman;
-import algorithms.SostitutionMatrix;
+import algorithms.SubstitutionMatrix;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -126,7 +126,7 @@ public class MainController {
 		float gep = Float.parseFloat(gepTextField.getText());
 
 		try {
-			SostitutionMatrix sMatrix = SostitutionMatrix
+			SubstitutionMatrix sMatrix = SubstitutionMatrix
 					.load(getClass().getResource("/sm/" + sostMatChoiceBox.getValue()));
 
 			algorithm = new SmithWaterman(a, b, gop, gep, sMatrix, 8);
