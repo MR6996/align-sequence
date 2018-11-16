@@ -5,19 +5,56 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 
+/**
+ * This class implement the Smith-Waterman algorithm for align two sequence. See
+ * {@link AlignmentAlgorithm} for details.
+ * 
+ * @author Mario Randazzo
+ *
+ */
 public class SmithWaterman extends AlignmentAlgorithm {
 
+	/**
+	 * the number of maximum to use of build {@link Alignment} list.
+	 */
 	private Integer firstK;
+
+	/**
+	 * The threshold to use for build the {@link Alignment} list.
+	 */
 	private Float threshold;
 
-	public SmithWaterman(String a, String b, int gop, float gep, SostitutionMatrix sostitutionMatrix, int firstK) {
-		super(a, b, gop, gep, sostitutionMatrix);
+	/**
+	 * Build a {@link AlignmentAlgorithm}.
+	 * 
+	 * @param a                  the sequence a.
+	 * @param b                  the sequence b.
+	 * @param gop                the gap opening penalty.
+	 * @param gep                the gap extension penalty.
+	 * @param substitutionMatrix the substitution matrix to use.
+	 * @param firstK             the number of maximum to use of build
+	 *                           {@link Alignment} list.
+	 */
+	public SmithWaterman(String a, String b, int gop, float gep, SubstitutionMatrix substitutionMatrix, int firstK) {
+		super(a, b, gop, gep, substitutionMatrix);
 		this.firstK = firstK;
 		this.threshold = null;
 	}
 
-	public SmithWaterman(String a, String b, int gop, float gep, SostitutionMatrix sostitutionMatrix, float threshold) {
-		super(a, b, gop, gep, sostitutionMatrix);
+	/**
+	 * Build a {@link AlignmentAlgorithm}.
+	 * 
+	 * @param a                  the sequence a.
+	 * @param b                  the sequence b.
+	 * @param gop                the gap opening penalty.
+	 * @param gep                the gap extension penalty.
+	 * @param substitutionMatrix the substitution matrix to use.
+	 * @param threshold          the threshold to use for build the
+	 *                           {@link Alignment} list.
+	 */
+	public SmithWaterman(String a, String b, int gop, float gep, SubstitutionMatrix substitutionMatrix,
+			float threshold) {
+		super(a, b, gop, gep, substitutionMatrix);
 		this.firstK = null;
 		this.threshold = threshold;
 	}
@@ -30,6 +67,12 @@ public class SmithWaterman extends AlignmentAlgorithm {
 			return getGreaterThanThreshold();
 	}
 
+	/**
+	 * Support method, return a List of {@link Cell} which score is greater than
+	 * threshold.
+	 * 
+	 * @return a list of {@link Cell}
+	 */
 	private ArrayList<Cell> getGreaterThanThreshold() {
 		ArrayList<Cell> mCells = new ArrayList<>();
 
@@ -49,6 +92,11 @@ public class SmithWaterman extends AlignmentAlgorithm {
 		return mCells;
 	}
 
+	/**
+	 * Support method, return a List with the firstk maximum {@link Cell}
+	 * 
+	 * @return a list of {@link Cell}
+	 */
 	private LinkedList<Cell> getFirstKCells() {
 		LinkedList<Cell> mCells = new LinkedList<>();
 		float max = Float.MIN_VALUE;
