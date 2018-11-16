@@ -1,38 +1,64 @@
+.h-header .label {
+	-fx-border-radius: 7.5 7.5 0 0;
+	-fx-background-radius: 7.5 7.5 0 0;
+	-fx-background-color: linear-gradient(to bottom, #fbfbfb, #cecece);
+	-fx-pref-width: 3000;
+}
+
+.v-header .label {
+	-fx-border-radius: 7.5 0 0 7.5;
+	-fx-background-radius: 7.5 0 0 7.5;
+	-fx-background-color: linear-gradient(to right, #fbfbfb, #cecece);
+	-fx-pref-height: 3000;
+}
+
+#matrix-header-label,
+#matrix-element-label {
+	-fx-min-width: 40;
+	-fx-min-height: 40;
+	-fx-alignment: center;	
+}
+
 
 #matrix-header-label {
-	-fx-background-color: #c0c0c0;
-	-fx-border-color: #808080;
-	-fx-border-width: 1px	
+	-fx-border-color: #a6a6a6;
+	-fx-border-width: 1px;
 }
 
 #matrix-element-label {
 	-fx-background-color: #fdfdfd;
 	-fx-border-color: #c0c0c0;
-	-fx-border-width: 0.5px
+	-fx-border-width: 0.5px;
+	
+	-fx-pref-width: 3000;
+	-fx-pref-height: 3000;
 }
 
 #matrix-element-label:hover {
-	-fx-background-color: #9fcfff;
+	-fx-background-color: radial-gradient(radius 90%, #badeff, derive(#badeff, -10%), derive(#badeff, 30%));
 }
 
 
-.scroll-pane {
-	-fx-background-color: #6a6a6a;
+
+.scroll-pane .corner, .scroll-pane .scroll-bar:horizontall, .scroll-pane .scroll-bar:vertical
+	{
+	-fx-background-insets: 0;
 }
-.scroll-pane .corner,
-.scroll-pane .scroll-bar:horizontall,
-.scroll-pane .scroll-bar:vertical {
-    -fx-background-insets: 0;
+
+#a-scroll-pane, #b-scroll-pane {
+	-fx-background-color: transparent;
+	-fx-background-insets: 0;
 }
 
 #a-scroll-pane {
-    -fx-background-insets: 0 1 0 0;
+    -fx-fit-to-height: true;
 }
 
 #b-scroll-pane {
-    -fx-background-insets: 0 0 1 0;
+    -fx-fit-to-width: true;
 }
 
 #matrix-scroll-pane {
-    -fx-background-insets: 1 0 0 1;
+	-fx-fit-to-height: true;
+    -fx-fit-to-width: true;
 }

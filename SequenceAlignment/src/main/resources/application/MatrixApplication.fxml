@@ -9,7 +9,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@matrix_application_stayle.css" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <ScrollPane id="b-scroll-pane" fx:id="bScrollPane" hbarPolicy="NEVER" layoutX="90.0" layoutY="30.0" prefHeight="42.0" vbarPolicy="NEVER" AnchorPane.leftAnchor="90.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="30.0">
+      <ScrollPane id="b-scroll-pane" fx:id="bScrollPane" hbarPolicy="NEVER" layoutX="90.0" layoutY="30.0" prefHeight="42.0" prefWidth="460.0" styleClass="h-header" vbarPolicy="NEVER" AnchorPane.leftAnchor="90.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="30.0">
          <content>
             <GridPane fx:id="sequenceBPane">
                <columnConstraints>
@@ -24,7 +24,7 @@
             </GridPane>
          </content>
       </ScrollPane>
-      <ScrollPane id="a-scroll-pane" fx:id="aScrollPane" hbarPolicy="NEVER" layoutX="50.0" layoutY="70.0" prefHeight="280.0" prefWidth="42.0" vbarPolicy="NEVER" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="70.0">
+      <ScrollPane id="a-scroll-pane" fx:id="aScrollPane" hbarPolicy="NEVER" layoutX="50.0" layoutY="70.0" prefHeight="280.0" prefWidth="42.0" styleClass="v-header" vbarPolicy="NEVER" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="70.0">
          <content>
             <GridPane fx:id="sequenceAPane">
                <columnConstraints>

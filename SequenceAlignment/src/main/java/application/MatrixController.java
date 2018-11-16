@@ -43,21 +43,16 @@ public class MatrixController {
 
 	@FXML
 	void initialize() {
-		try {
 		bScrollPane.hvalueProperty().bindBidirectional(matrixScollPane.hvalueProperty());
 		aScrollPane.vvalueProperty().bindBidirectional(matrixScollPane.vvalueProperty());
 
 		for (int i = 0; i < m; i++) {
 			Label bHeaderLabel = new Label(Character.toString(b.charAt(i)).toUpperCase());
-			bHeaderLabel.setPrefSize(40, 40);
-			bHeaderLabel.setAlignment(Pos.CENTER);
 			bHeaderLabel.setId("matrix-header-label");
 			sequenceBPane.add(bHeaderLabel, i, 0);
 
 			for (int j = 0; j < n; j++) {
 				Label scoreLabel = new Label(Float.toString(pMatrix[j][i].getScore()));
-				scoreLabel.setPrefSize(40, 40);
-				scoreLabel.setAlignment(Pos.CENTER);
 				scoreLabel.setId("matrix-element-label");
 				matrixPane.add(scoreLabel, i, j);
 
@@ -66,14 +61,8 @@ public class MatrixController {
 
 		for (int j = 0; j < n; j++) {
 			Label aHeaderLabel = new Label(Character.toString(a.charAt(j)).toUpperCase());
-			aHeaderLabel.setPrefSize(40, 40);
-			aHeaderLabel.setAlignment(Pos.CENTER);
 			aHeaderLabel.setId("matrix-header-label");
 			sequenceAPane.add(aHeaderLabel, 0, j);
-		}
-		}
-		catch (Exception e) {
-			e.printStackTrace();
 		}
 	}
 
