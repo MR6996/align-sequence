@@ -126,7 +126,7 @@ public class SmithWaterman extends AlignmentAlgorithm {
 
 	@Override
 	protected boolean isFinalCell(Cell c) {
-		return c.getScore() == 0;
+		return c.getScore() == 0 || (c.getX() == 0 && c.getY() == 0);
 	}
 
 }

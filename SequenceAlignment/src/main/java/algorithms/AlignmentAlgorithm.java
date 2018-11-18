@@ -2,6 +2,8 @@ package algorithms;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * This class models a generic alignment algorithm for two sequence based on
@@ -9,8 +11,9 @@ import java.util.List;
  * {@link SubstitutionMatrix}, where is defined the alphabet and the scores of
  * pairings between letters.
  * 
- * <br><br>
- *  
+ * <br>
+ * <br>
+ * 
  * For concrete implementation view {@link NeedelemanWunsch} or
  * {@link SmithWaterman} for global and local alignment respectively.
  * 
@@ -52,7 +55,7 @@ public abstract class AlignmentAlgorithm {
 	/**
 	 * The list of {@link Alignment} calculated with the algorithm.
 	 */
-	protected ArrayList<Alignment> alignments;
+	protected List<Alignment> alignments;
 
 	/**
 	 * The maximum score in pairing matrix.
@@ -79,13 +82,26 @@ public abstract class AlignmentAlgorithm {
 
 		pairingMatrix = new Cell[a.length()][b.length()];
 
-		for (int i = 0; i < a.length(); i++)
-			pairingMatrix[i][0] = new Cell(i, 0,
-					Math.max(0.0f, this.substitutionMatrix.get(this.a.charAt(i), this.b.charAt(0))));
+		pairingMatrix[0][0] = new Cell(0, 0,
+				Math.max(0f, this.substitutionMatrix.get(this.a.charAt(0), this.b.charAt(0))));
 
-		for (int j = 1; j < b.length(); j++)
-			pairingMatrix[0][j] = new Cell(0, j,
-					Math.max(0.0f, this.substitutionMatrix.get(this.a.charAt(0), this.b.charAt(j))));
+		for (int i = 1; i < a.length(); i++) {
+			float score = this.substitutionMatrix.get(this.a.charAt(i), this.b.charAt(0));
+			if (score > 0f) {
+				pairingMatrix[i][0] = new Cell(i, 0, score);
+				pairingMatrix[i][0].setUp(pairingMatrix[i - 1][0]);
+			} else
+				pairingMatrix[i][0] = new Cell(i, 0);
+		}
+
+		for (int j = 1; j < b.length(); j++) {
+			float score = this.substitutionMatrix.get(this.a.charAt(0), this.b.charAt(j));
+			if (score > 0f) {
+				pairingMatrix[0][j] = new Cell(0, j, score);
+				pairingMatrix[0][j].setLeft(pairingMatrix[0][j - 1]);
+			} else
+				pairingMatrix[0][j] = new Cell(0, j);
+		}
 
 		for (int i = 1; i < a.length(); i++)
 			for (int j = 1; j < b.length(); j++)
@@ -202,46 +218,6 @@ public abstract class AlignmentAlgorithm {
 	}
 
 	/**
-	 * Support method, implement an iterative procedure for build a list of
-	 * {@link Alignment}.
-	 */
-	private void elaborateResults() {
-		List<Cell> mCells = getMaximumCells();
-
-		for (Cell c : mCells) {
-			Stack<CellTrace> s = new ArrayListStack<>();
-			s.push(new CellTrace(c, a.substring(c.getX() + 1), b.substring(c.getY() + 1)));
-
-			while (!s.isEmpty()) {
-				CellTrace top = s.pop();
-				int x = top.c.getX();
-				int y = top.c.getY();
-
-				if (isFinalCell(top.c)) {
-					top.partialAlignment.add(a.charAt(x), b.charAt(y));
-					top.partialAlignment.add(a.substring(0, x), b.substring(0, y));
-					alignments.add(top.partialAlignment.build());
-				} else {
-					if (top.c.getLeft() != null) {
-						s.push(new CellTrace(top.c.getLeft(),
-								new Alignment.Builder(top.partialAlignment.addOnB(b.charAt(y))), false, true));
-
-					}
-
-					if (top.c.getUp() != null) {
-						s.push(new CellTrace(top.c.getUp(),
-								new Alignment.Builder(top.partialAlignment.addOnA(a.charAt(x))), true, false));
-					}
-
-					if (top.c.getDiagonal() != null)
-						s.push(new CellTrace(top.c.getDiagonal(),
-								new Alignment.Builder(top.partialAlignment.add(a.charAt(x), b.charAt(y)))));
-				}
-			}
-		}
-	}
-
-	/**
 	 * Abstract method used in internal procedure for build the list of
 	 * {@link Alignment}. This method must return True if c is final {@link Cell} in
 	 * the alignment.
@@ -274,10 +250,13 @@ public abstract class AlignmentAlgorithm {
 	 * 
 	 * @return a list of {@link Alignment}.
 	 */
-	public List<Alignment> getAlignments() {
+	public List<Alignment> getAlignments(int maxAlignment) {
+		AlignmentGenerator generator = new AlignmentGenerator(this);
+
 		alignments = null;
 		alignments = new ArrayList<>();
-		elaborateResults();
+		alignments = Stream.generate(generator::next).limit(maxAlignment).filter(a -> a != null)
+				.collect(Collectors.toList());
 		return alignments;
 	}
 
