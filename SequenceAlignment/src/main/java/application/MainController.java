@@ -10,8 +10,10 @@ import java.net.URLDecoder;
 
 import algorithms.Alignment;
 import algorithms.AlignmentAlgorithm;
+import algorithms.NeedelemanWunsch;
 import algorithms.SmithWaterman;
 import algorithms.SubstitutionMatrix;
+import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -22,6 +24,8 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
@@ -46,18 +50,6 @@ public class MainController {
 	private ImageView uploadBButton;
 
 	@FXML
-	private ToggleGroup Alignment_type;
-
-	@FXML
-	private TextField gepTextField;
-
-	@FXML
-	private TextField gopTextField;
-
-	@FXML
-	private ChoiceBox<String> sostMatChoiceBox;
-
-	@FXML
 	private Button alignButton;
 
 	@FXML
@@ -71,19 +63,42 @@ public class MainController {
 
 	@FXML
 	private ImageView copyResultButton;
-	
+
 	@FXML
-    private CheckBox thresholdCheck;
+	private RadioButton globalAlignmentToggle;
 
-    @FXML
-    private TextField thresholdValue;
+	@FXML
+	private ToggleGroup Alignment_type;
 
-    @FXML
-    private TextField maxAlignmentValue;
+	@FXML
+	private RadioButton localAlignmentToggle;
 
-    @FXML
-    private TextField maxScoresValue;
-	
+	@FXML
+	private TextField gepTextField;
+
+	@FXML
+	private TextField gopTextField;
+
+	@FXML
+	private ChoiceBox<String> sostMatChoiceBox;
+
+	@FXML
+	private CheckBox thresholdCheck;
+
+	@FXML
+	private Label thresholdLabel;
+
+	@FXML
+	private TextField thresholdValue;
+
+	@FXML
+	private TextField maxAlignmentValue;
+
+	@FXML
+	private Label maxScoresLabel;
+
+	@FXML
+	private TextField maxScoresValue;
 
 	private AlignmentAlgorithm algorithm;
 
@@ -102,7 +117,15 @@ public class MainController {
 			e.printStackTrace();
 		}
 
-		System.out.println(Alignment_type.selectedToggleProperty().get());
+		thresholdCheck.disableProperty().bind(globalAlignmentToggle.selectedProperty());
+		thresholdLabel.disableProperty()
+				.bind(Bindings.or(globalAlignmentToggle.selectedProperty(), thresholdCheck.selectedProperty().not()));
+		thresholdValue.disableProperty()
+				.bind(Bindings.or(globalAlignmentToggle.selectedProperty(), thresholdCheck.selectedProperty().not()));
+		maxScoresLabel.disableProperty()
+				.bind(Bindings.or(globalAlignmentToggle.selectedProperty(), thresholdCheck.selectedProperty()));
+		maxScoresValue.disableProperty()
+				.bind(Bindings.or(globalAlignmentToggle.selectedProperty(), thresholdCheck.selectedProperty()));
 
 	}
 
@@ -129,19 +152,27 @@ public class MainController {
 			SubstitutionMatrix sMatrix = SubstitutionMatrix
 					.load(getClass().getResource("/sm/" + sostMatChoiceBox.getValue()));
 
-			algorithm = new SmithWaterman(a, b, gop, gep, sMatrix, 8);
+			if (Alignment_type.getSelectedToggle().equals(globalAlignmentToggle))
+				algorithm = new NeedelemanWunsch(a, b, gop, gep, sMatrix);
+			else if (thresholdCheck.isSelected()) {
+				float threshold = Float.parseFloat(thresholdValue.getText());
+				algorithm = new SmithWaterman(a, b, gop, gep, sMatrix, threshold);
+			} else {
+				int k = Integer.parseInt(maxScoresValue.getText());
+				algorithm = new SmithWaterman(a, b, gop, gep, sMatrix, k);
+			}
+			
+			StringBuilder resultBuilder = new StringBuilder("Result:");
+			int i = 0;
+			for (Alignment am : algorithm.getAlignments())
+				resultBuilder.append("\n\n[" + (i++) + "]: \n" + am);
 
-			
-			StringBuilder resultBuilder = new StringBuilder("Result:"); int i = 0;
-			for(Alignment am: algorithm.getAlignments())
-			resultBuilder.append("\n\nAlignment: " + (i++) + ": \n" + am);
-			 
 			outputTextArea.setText(resultBuilder.toString());
-			
+
 		} catch (IllegalArgumentException e) {
 			showSimpleErrorMessage("Invalid format for the sostitution matrix choiced!");
 		} catch (IOException e) {
-			showSimpleErrorMessage("Disk error while loading the matrix!");
+			showSimpleErrorMessage("Disk error while loading the sostitution matrix!");
 		}
 	}
 
@@ -175,25 +206,25 @@ public class MainController {
 	}
 
 	@FXML
-    void showMatrix(MouseEvent event) {
-    	if(algorithm != null) {
-    		try {
-	    		Stage matrixStage = new Stage();
-	    		
-	    		FXMLLoader loader = new FXMLLoader(getClass().getResource("MatrixApplication.fxml"));
-	    		loader.setController( new MatrixController(algorithm.getPairingMatrix(), algorithm.getA(), algorithm.getB()));
-	    		Parent root = loader.load();
-	    		
-	    		matrixStage.setTitle("Alignment matrix");
-	    		matrixStage.setScene( new Scene(root));
-	    		matrixStage.show(); 
-    		}
-    		catch (IOException e) {
-    			showSimpleErrorMessage("Can't load resource file for creating new window!");
-    		}
-    	}
-    	else showSimpleErrorMessage("No sequences have been aligned yet!");
-    }
+	void showMatrix(MouseEvent event) {
+		if (algorithm != null) {
+			try {
+				Stage matrixStage = new Stage();
+
+				FXMLLoader loader = new FXMLLoader(getClass().getResource("MatrixApplication.fxml"));
+				loader.setController(
+						new MatrixController(algorithm.getPairingMatrix(), algorithm.getA(), algorithm.getB()));
+				Parent root = loader.load();
+
+				matrixStage.setTitle("Alignment matrix");
+				matrixStage.setScene(new Scene(root));
+				matrixStage.show();
+			} catch (IOException e) {
+				showSimpleErrorMessage("Can't load resource file for creating new window!");
+			}
+		} else
+			showSimpleErrorMessage("No sequences have been aligned yet!");
+	}
 
 	@FXML
 	void reset(MouseEvent event) {
