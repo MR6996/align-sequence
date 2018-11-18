@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.List;
 
 import algorithms.Alignment;
 import algorithms.AlignmentAlgorithm;
@@ -147,7 +148,8 @@ public class MainController {
 
 		int gop = Integer.parseInt(gopTextField.getText());
 		float gep = Float.parseFloat(gepTextField.getText());
-
+		int maxAlignment = Integer.parseInt(maxAlignmentValue.getText());
+		
 		try {
 			SubstitutionMatrix sMatrix = SubstitutionMatrix
 					.load(getClass().getResource("/sm/" + sostMatChoiceBox.getValue()));
@@ -162,9 +164,11 @@ public class MainController {
 				algorithm = new SmithWaterman(a, b, gop, gep, sMatrix, k);
 			}
 			
-			StringBuilder resultBuilder = new StringBuilder("Result:");
+			
+			List<Alignment> resultAligment = algorithm.getAlignments(maxAlignment);
+			StringBuilder resultBuilder = new StringBuilder("Found " + resultAligment.size() + " alignments.");
 			int i = 0;
-			for (Alignment am : algorithm.getAlignments())
+			for (Alignment am : resultAligment)
 				resultBuilder.append("\n\n[" + (i++) + "]: \n" + am);
 
 			outputTextArea.setText(resultBuilder.toString());
