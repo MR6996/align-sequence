@@ -195,7 +195,7 @@ public class Cell implements Comparable<Cell> {
 
 	@Override
 	public int compareTo(Cell o) {
-		return Float.compare(this.score, o.score);
+		return Float.compare(o.score, this.score);
 	}
 
 }

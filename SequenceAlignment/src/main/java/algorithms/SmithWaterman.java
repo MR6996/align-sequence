@@ -1,6 +1,7 @@
 package algorithms;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
@@ -89,6 +90,7 @@ public class SmithWaterman extends AlignmentAlgorithm {
 			}
 
 		this.maximumScore = max;
+		Collections.sort(mCells);
 		return mCells;
 	}
 
